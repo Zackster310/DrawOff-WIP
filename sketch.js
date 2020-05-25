@@ -22,12 +22,17 @@ function setup(){
     if (gameState === 0){
         form = new Form();
         form.display();
+        Player.getCount();
     }
 
 }
 
 function draw(){
     background(200);
+
+    if(playerCount === 4){
+        gameState = 1;
+    }
 
     //console.log(gameState)
     if (gameState === 1) {
@@ -67,6 +72,11 @@ function drawOff(){
             endShape();
 
         }
+
+        drawingRef = "players/player" + player.index;
+        database.ref(drawingRef).update({
+            drawing : prev
+        })
 
         drawSprites();
     }

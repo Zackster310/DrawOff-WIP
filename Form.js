@@ -29,7 +29,6 @@ class Form {
       this.button.hide();
 
       player = new Player();
-      player.getCount();
 
       console.log(playerCount);
 

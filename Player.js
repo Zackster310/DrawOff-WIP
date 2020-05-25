@@ -5,7 +5,7 @@ class Player {
         this.index = null;
     }
 
-    getCount(){
+    static getCount(){
         var countRef = database.ref('playerCount');
         countRef.on("value",(data) => {
             playerCount = data.val();
@@ -22,7 +22,7 @@ class Player {
         var playerIndex = "players/player" + this.index;
         database.ref(playerIndex).set({
             name : this.name,
-            drawing : this.drawing
+            //drawing : this.drawing
         })
     }
 
