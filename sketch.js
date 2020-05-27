@@ -25,6 +25,35 @@ function setup(){
         Player.getCount();
     }
 
+
+
+    topics = ["zoo","mountain range","computer","sports","school/college","movies","mythical creature"];
+
+    topic1 = Math.round(random(1,7));
+    topic2 =  Math.round(random(1,7));
+
+    if(topic2 === topic1){
+        topic2 = Math.round(random(1,7));
+    }
+
+    else{
+        topic3 = Math.round(random(1,7));
+
+        if(topic3 === topic1 || topic3 === topic2){
+            topic3 = Math.round(random(1,7));
+        }
+    }
+
+    database.ref('topics').update({
+        topic1 : topic1
+    })
+    database.ref('topics').update({
+        topic2 : topic2
+    })
+    database.ref('topics').update({
+        topic3 : topic3
+    })
+
 }
 
 function draw(){
@@ -36,12 +65,50 @@ function draw(){
 
     //console.log(gameState)
     if (gameState === 1) {
-        drawOff()
+        if(selectTopic()){
+            drawOff();
+        }
+        else{
+            text("Select The Topic" , displayWidth/2 , 75);
+        }
     }
 }
     
+function selectTopic(){
+    var no1;
+    var no2;
+    var no3;
+
+    console.log(topic1);
+    console.log(topics[topic1]);
+
+    database.ref('topics/topic1').on("value",(data) => {
+        no1 : database.val()
+    })
+
+    database.ref('topics/topic1').on("value",(data) => {
+        no2 : database.val()
+    })
+
+    database.ref('topics/topic1').on("value",(data) => {
+        no3 : database.val()
+    });
+
+    option1 = createButton(topics[no1]);
+    option2 = createButton(topics[no2]);
+    option3 = createButton(topics[no3]);
+
+    option1.position(displayWidth/2 - 200 , displayHeight/2 - 100)
+    option2.position(displayWidth/2 - 50 , displayHeight/2 - 100)
+    option3.position(displayWidth/2 + 150 , displayHeight/2 - 100)
+
+    return true;
+
+}
+
 function drawOff(){
-    form.hide()
+    form.hide();
+
     canvas.mousePressed(startPath);
 
     clear = createButton('Clear Screen');
