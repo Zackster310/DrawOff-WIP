@@ -10,9 +10,23 @@ var playerCount = 0;
 
 var form, canvas;
 
+var selectedTopic = null;
+
+var no1;
+var no2;
+var no3;
+
+var vote1;
+var vote2;
+var vote3;
+
+var Tselected;
+
 //var color = 'black';
 
 var database;
+
+var topics = [];
 
 function setup(){
     canvas = createCanvas(displayWidth - 20 ,displayHeight - 30);
@@ -44,14 +58,14 @@ function setup(){
         }
     }
 
-    database.ref('topics').update({
-        topic1 : topic1
+    database.ref('topics/topic1').update({
+        name : topic1
     })
-    database.ref('topics').update({
-        topic2 : topic2
+    database.ref('topics/topic2').update({
+        name : topic2
     })
-    database.ref('topics').update({
-        topic3 : topic3
+    database.ref('topics/topic3').update({
+        name : topic3
     })
 
 }
@@ -75,35 +89,100 @@ function draw(){
 }
     
 function selectTopic(){
-    var no1;
-    var no2;
-    var no3;
 
-    console.log(topic1);
-    console.log(topics[topic1]);
+    //console.log(topic1);
+    //console.log(topics[topic1]);
 
-    database.ref('topics/topic1').on("value",(data) => {
-        no1 : database.val()
+    database.ref('topics/topic1/name').on("value",(data) => {
+        no1 = data.val()
     })
 
-    database.ref('topics/topic1').on("value",(data) => {
-        no2 : database.val()
+    database.ref('topics/topic2/name').on("value",(data) => {
+        no2 = data.val()
     })
 
-    database.ref('topics/topic1').on("value",(data) => {
-        no3 : database.val()
+    database.ref('topics/topic3/name').on("value",(data) => {
+        no3 = data.val()
     });
 
-    option1 = createButton(topics[no1]);
-    option2 = createButton(topics[no2]);
-    option3 = createButton(topics[no3]);
+    console.log(no1);
+    console.log(topics[no1]);
 
-    option1.position(displayWidth/2 - 200 , displayHeight/2 - 100)
-    option2.position(displayWidth/2 - 50 , displayHeight/2 - 100)
-    option3.position(displayWidth/2 + 150 , displayHeight/2 - 100)
+    if(selectedTopic === null){
+        option1 = createButton(topics[no1]);
+        option2 = createButton(topics[no2]);
+        option3 = createButton(topics[no3]);
 
-    return true;
+        option1.position(displayWidth/2 - 200 , displayHeight/2 - 100)
+        option2.position(displayWidth/2 - 25 , displayHeight/2 - 100)
+        option3.position(displayWidth/2 + 150 , displayHeight/2 - 100)
 
+
+        option1.mousePressed(() => {
+
+            console.log("hi");
+
+            database.ref('topics/topic1/votes').on("value",(data) => {
+                vote1 = data.val()
+            })
+
+            vote1 += 1
+
+            database.ref('topics/topic1').update({
+                votes : vote1
+            })
+
+            selected();
+
+        })
+
+        option2.mousePressed(() => {
+
+            database.ref('topics/topic2/votes').on("value",(data) => {
+                vote2 = data.val()
+            })
+
+            vote2 += 1
+
+            database.ref('topics/topic2').update({
+                votes : vote2
+            })
+
+            selected();
+
+        })
+
+        option3.mousePressed(() => {
+
+            database.ref('topics/topic3/votes').on("value",(data) => {
+                vote3 = data.val()
+            })
+
+            vote3 += 1
+
+            database.ref('topics/topic3').update({
+                votes : vote3
+            })
+
+            selected();
+
+        })
+
+        return false;
+    }
+
+}
+
+function selected(){
+    database.ref('topics/voted').on("value",(data) => {
+        Tselected = data.val();
+    })
+
+    Tselected += 1;
+
+    database.ref('topics').update({
+        voted : Tselected
+    })
 }
 
 function drawOff(){
