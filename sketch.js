@@ -43,18 +43,18 @@ function setup(){
 
     topics = ["zoo","mountain range","computer","sports","school/college","movies","mythical creature"];
 
-    topic1 = Math.round(random(1,7));
-    topic2 =  Math.round(random(1,7));
+    topic1 = Math.round(random(0,6));
+    topic2 =  Math.round(random(0,6));
 
     if(topic2 === topic1){
-        topic2 = Math.round(random(1,7));
+        topic2 = Math.round(random(0,6));
     }
 
     else{
-        topic3 = Math.round(random(1,7));
+        topic3 = Math.round(random(0,6));
 
         if(topic3 === topic1 || topic3 === topic2){
-            topic3 = Math.round(random(1,7));
+            topic3 = Math.round(random(0,6));
         }
     }
 
